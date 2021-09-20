@@ -46,4 +46,4 @@ jobs:
       run: npm install 
       
     - name: Run script
-      run: npm run start ${{ secrets.XJ_USERID }} ${{ secrets.XJ_PASSWORD }}
+      run: npm run start ${{ secrets.XJ_USERID }} ${{ secrets.XJ_PASSWORD }} ${{ secrets.HT_USERID }} ${{ secrets.HT_PASSWORD }}
