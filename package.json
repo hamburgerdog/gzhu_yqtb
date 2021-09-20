@@ -1,0 +1,15 @@
+{
+  "name": "gzhu-yqtb",
+  "version": "1.0.0",
+  "author": "xjosiah",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^10.2.0"
+  },
+  "scripts": {
+    "start": "node run.js"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^5.4.4"
+  }
+}
