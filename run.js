@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const infos = process.argv.slice(2);
+const infos = process.argv.slice(4);
 if (infos.length % 2 !== 0) throw new Error('输入信息不正确，请重新输入格式为： [id] [password]');
 
 infos.forEach((item, index) => {
@@ -11,9 +11,12 @@ infos.forEach((item, index) => {
   }
 });
 
-const PAGE_TIMEOUT = 60 * 1000;
-const COMMON_TIMEOUT = 5 * 1000;
+const PAGE_TIMEOUT = Number(process.argv[2]) * 1000;
+const COMMON_TIMEOUT = Number(process.argv[3]) * 1000;
 const LOGIN_PATH = "http://yqtb.gzhu.edu.cn/infoplus/form/XNYQSB/start?back=1&x_posted=true";
+
+console.log(PAGE_TIMEOUT)
+console.log(COMMON_TIMEOUT)
 
 const login = async (id, password) => {
   const browser = await puppeteer.launch();

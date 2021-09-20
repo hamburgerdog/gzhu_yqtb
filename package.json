@@ -7,7 +7,8 @@
     "puppeteer": "^10.2.0"
   },
   "scripts": {
-    "start": "node run.js"
+    "start": "node run.js",
+    "node:start":"node run.js 90 5"
   },
   "devDependencies": {
     "@types/puppeteer": "^5.4.4"
