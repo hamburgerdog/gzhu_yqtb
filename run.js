@@ -47,9 +47,7 @@ const login = async (id, password, browser) => {
 };
 
 const loginByInfos = async (infos) => {
-  const browser = await puppeteer.launch({
-    headless: false,
-  });
+  const browser = await puppeteer.launch();
   try {
     const taskQueue = [];
     for (let i = 0; i < infos.length; i += 2) {
