@@ -24,12 +24,15 @@ const login = async (id, password) => {
   page.setDefaultTimeout(PAGE_TIMEOUT);
   page.setDefaultNavigationTimeout(PAGE_TIMEOUT);
   await page.goto(LOGIN_PATH, {
-    waitUntil: 'networkidle2'
+    waitUntil: 'load',
+    timeout: 0,
   });
+  await page.waitForTimeout(COMMON_TIMEOUT);
   await page.waitForSelector("#un");
   await page.type("#un", id);
   await page.keyboard.down('Tab');
   await page.keyboard.type(password);
+  await page.waitForSelector("#index_login_btn");
   await Promise.all([page.click("#index_login_btn"), page.waitForNavigation()]);
   //  避免.waitForSelector()不生效才用的.waitForTimeout()
   //  暂停是为了等待页面加载
