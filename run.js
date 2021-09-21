@@ -43,22 +43,19 @@ const login = async (id, password, browser) => {
   await page.click("#V1_CTRL262");
   await page.click("#V1_CTRL37");
   await page.click("#V1_CTRL82");
-  await Promise.all([page.click(".command_button_content"), page.waitForTimeout(COMMON_TIMEOUT * 2)]);
+  await page.click(".command_button_content");
+  // 等待页面提交
+  await page.waitForTimeout(COMMON_TIMEOUT * 2)
 };
 
 const loginByInfos = async (infos) => {
   const browser = await puppeteer.launch();
-  try {
-    const taskQueue = [];
-    for (let i = 0; i < infos.length; i += 2) {
-      taskQueue.push(login(infos[i], infos[i + 1], browser));
-    };
-    await Promise.all(taskQueue);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    await browser.close();
-  }
+  const taskQueue = [];
+  for (let i = 0; i < infos.length; i += 2) {
+    taskQueue.push(login(infos[i], infos[i + 1], browser));
+  };
+  await Promise.all(taskQueue);
+  await browser.close();
 };
 
 loginByInfos(infos);
