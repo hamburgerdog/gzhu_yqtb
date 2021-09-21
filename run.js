@@ -15,11 +15,9 @@ const PAGE_TIMEOUT = Number(process.argv[2]) * 1000;
 const COMMON_TIMEOUT = Number(process.argv[3]) * 1000;
 const LOGIN_PATH = "http://yqtb.gzhu.edu.cn/infoplus/form/XNYQSB/start?back=1&x_posted=true";
 
-console.log(PAGE_TIMEOUT)
-console.log(COMMON_TIMEOUT)
+console.log(`页面超时时间为：${process.argv[2]?process.argv[2]:'♾️'} 秒\n等待时间为：\t${process.argv[3]} 秒`);
 
-const login = async (id, password) => {
-  const browser = await puppeteer.launch();
+const login = async (id, password, browser) => {
   const page = await browser.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT);
   page.setDefaultNavigationTimeout(PAGE_TIMEOUT);
@@ -46,9 +44,23 @@ const login = async (id, password) => {
   await page.click("#V1_CTRL37");
   await page.click("#V1_CTRL82");
   await Promise.all([page.click(".command_button_content"), page.waitForTimeout(COMMON_TIMEOUT * 2)]);
-  browser.close();
 };
 
-for (let i = 0; i < infos.length; i += 2) {
-  login(infos[i], infos[i + 1]);
+const loginByInfos = async (infos) => {
+  const browser = await puppeteer.launch({
+    headless: false,
+  });
+  try {
+    const taskQueue = [];
+    for (let i = 0; i < infos.length; i += 2) {
+      taskQueue.push(login(infos[i], infos[i + 1], browser));
+    };
+    await Promise.all(taskQueue);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await browser.close();
+  }
 };
+
+loginByInfos(infos);
