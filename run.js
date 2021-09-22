@@ -17,7 +17,8 @@ const LOGIN_PATH = "http://yqtb.gzhu.edu.cn/infoplus/form/XNYQSB/start?back=1&x_
 
 console.log(`页面超时时间为：${process.argv[2]?process.argv[2]:'♾️'} 秒\n等待时间为：\t${process.argv[3]} 秒`);
 
-const login = async (id, password, browser) => {
+const login = async (id, password) => {
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT);
   page.setDefaultNavigationTimeout(PAGE_TIMEOUT);
@@ -45,17 +46,15 @@ const login = async (id, password, browser) => {
   await page.click("#V1_CTRL82");
   await page.click(".command_button_content");
   // 等待页面提交
-  await page.waitForTimeout(COMMON_TIMEOUT * 2)
+  await page.waitForTimeout(COMMON_TIMEOUT * 2);
+  await browser.close();
 };
 
 const loginByInfos = async (infos) => {
-  const browser = await puppeteer.launch();
   const taskQueue = [];
   for (let i = 0; i < infos.length; i += 2) {
-    taskQueue.push(login(infos[i], infos[i + 1], browser));
+    taskQueue.push(login(infos[i], infos[i + 1]));
   };
-  await Promise.all(taskQueue);
-  await browser.close();
 };
 
 loginByInfos(infos);
